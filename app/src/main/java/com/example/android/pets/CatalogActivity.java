@@ -35,6 +35,8 @@ import com.example.android.pets.data.PetDbHelper;
  * Displays list of pets that were entered and stored in the app.
  */
 public class CatalogActivity extends AppCompatActivity {
+    private PetDbHelper mDbHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,15 @@ public class CatalogActivity extends AppCompatActivity {
             }
         });
 
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+
+
         displayDatabaseInfo();
+
     }
 
 
@@ -77,21 +87,20 @@ public class CatalogActivity extends AppCompatActivity {
         }
     }
 
-    private void insertPet()
-    {
-        PetDbHelper dbHelper=new PetDbHelper(this);
-        SQLiteDatabase db=dbHelper.getWritableDatabase();
+    void insertPet() {
+        PetDbHelper dbHelper = new PetDbHelper(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         //CONTENTVALUES  is a class that stores key and value pairs
 
-        ContentValues values=new ContentValues();
-        values.put(PetEntry.COLUMN_PET_NAME,"Toto");
-        values.put(PetEntry.COLUMN_PET_BREED,"Terrier");
-        values.put(PetEntry.COLUMN_PET_GENDER,PetEntry.GENDER_MALE);
-        values.put(PetEntry.COLUMN_PET_WEIGHT,"7");
+        ContentValues values = new ContentValues();
+        values.put(PetEntry.COLUMN_PET_NAME, "Toto");
+        values.put(PetEntry.COLUMN_PET_BREED, "Terrier");
+        values.put(PetEntry.COLUMN_PET_GENDER, PetEntry.GENDER_MALE);
+        values.put(PetEntry.COLUMN_PET_WEIGHT, "7");
 
-       long newRowId = db.insert(PetEntry.TABLE_NAME,null,values);
-        Log.v("CatalogActivity","New row id"+ newRowId);
+        long newRowId = db.insert(PetEntry.TABLE_NAME, null, values);
+        Log.v("CatalogActivity", "New row id" + newRowId);
 
     }
 
@@ -110,7 +119,7 @@ public class CatalogActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to a click on the "Insert dummy data" menu option
             case R.id.action_insert_dummy_data:
-               insertPet();
+                insertPet();
                 displayDatabaseInfo();
 
                 // Do nothing for now

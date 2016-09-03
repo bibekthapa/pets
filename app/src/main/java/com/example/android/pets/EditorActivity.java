@@ -142,7 +142,7 @@ public class EditorActivity extends AppCompatActivity {
         }
         else
         {
-            Toast.makeText(this,"Pet saved with id"+ newrowID,Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Pet saved with id "+ newrowID,Toast.LENGTH_SHORT).show();
 
         }
 

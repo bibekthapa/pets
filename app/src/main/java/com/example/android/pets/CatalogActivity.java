@@ -54,10 +54,10 @@ public class CatalogActivity extends AppCompatActivity {
         });
 
     }
+
     @Override
     protected void onStart() {
         super.onStart();
-
 
 
         displayDatabaseInfo();
@@ -74,9 +74,9 @@ public class CatalogActivity extends AppCompatActivity {
 
         // Perform this raw SQL query "SELECT * FROM pets"
         // to get a Cursor that contains all rows from the pets table.
-       // Cursor cursor = db.rawQuery("SELECT * FROM " + PetEntry.TABLE_NAME, null);
+        // Cursor cursor = db.rawQuery("SELECT * FROM " + PetEntry.TABLE_NAME, null);
 
-        String projection []={
+        String projection[] = {
                 PetEntry.COLUMN_ID,
                 PetEntry.COLUMN_PET_NAME,
                 PetEntry.COLUMN_PET_BREED,
@@ -84,19 +84,43 @@ public class CatalogActivity extends AppCompatActivity {
                 PetEntry.COLUMN_PET_GENDER
 
         };
-       Cursor cursor=db.query(PetEntry.TABLE_NAME,
-               projection,
-               null,
-               null,
-               null,
-               null,
-               null,
-               null);
+        Cursor cursor = db.query(PetEntry.TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
         try {
             // Display the number of rows in the Cursor (which reflects the number of rows in the
             // pets table in the database).
             TextView displayView = (TextView) findViewById(R.id.text_view_pet);
             displayView.setText("Number of rows in pets database table: " + cursor.getCount());
+            displayView.append("\n" +PetEntry.COLUMN_ID + "-" + PetEntry.COLUMN_PET_NAME + "-" + PetEntry.COLUMN_PET_BREED + "-" + PetEntry.COLUMN_PET_GENDER + "-" + PetEntry.COLUMN_PET_WEIGHT);
+            //What append does ?
+            //Wll using append in the second line for PetEntries will not overwrite the first line i.e "No of rows in pets database table"
+            //if we donot use append then we coulnot see the Number of rows in database table line
+            int idColumnIndex = cursor.getColumnIndex(PetEntry._ID);
+            int nameColumnIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_NAME);
+            int breedColumnIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_BREED);
+            int genderColumnIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_GENDER);
+            int weightColumnIndex = cursor.getColumnIndex(PetEntry.COLUMN_PET_WEIGHT);
+
+
+            while (cursor.moveToNext()) {
+                int id = cursor.getInt(idColumnIndex);
+                String name = cursor.getString(nameColumnIndex);
+                String breed=cursor.getString(breedColumnIndex);
+                String gender=cursor.getString(genderColumnIndex);
+                String weight=cursor.getString(weightColumnIndex);
+
+                displayView.append("\n" + id + "-" + name +"-"+breed+"-"+gender+"-"+weight);
+
+
+            }
+
+
         } finally {
             // Always close the cursor when you're done reading from it. This releases all its
             // resources and makes it invalid.
@@ -108,7 +132,7 @@ public class CatalogActivity extends AppCompatActivity {
         PetDbHelper dbHelper = new PetDbHelper(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        //CONTENTVALUES  is a class that stores key and value pairs
+        // CONTENTVALUES  is a class that stores key and value pairs
 
         ContentValues values = new ContentValues();
         values.put(PetEntry.COLUMN_PET_NAME, "Toto");
